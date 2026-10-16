@@ -1,0 +1,184 @@
+[1mdiff --cc notebooks/Week 4/Day 19/Day_19_Classification.ipynb[m
+[1mindex 6c9f6bc,a67349e..0000000[m
+[1m--- a/notebooks/Week 4/Day 19/Day_19_Classification.ipynb[m
+[1m+++ b/notebooks/Week 4/Day 19/Day_19_Classification.ipynb[m
+[36m@@@ -1729,7 -1748,7 +1748,11 @@@[m
+    },[m
+    {[m
+     "cell_type": "code",[m
+[32m++<<<<<<< HEAD[m
+[32m +   "execution_count": null,[m
+[32m++=======[m
+[32m+    "execution_count": 13,[m
+[32m++>>>>>>> 17032f40c9d00530a9bf1e0c500f855157650e00[m
+     "id": "d19c044",[m
+     "metadata": {},[m
+     "outputs": [[m
+[36m@@@ -1737,178 -1756,15 +1760,189 @@@[m
+       "name": "stdout",[m
+       "output_type": "stream",[m
+       "text": [[m
+[32m++<<<<<<< HEAD[m
+[32m +      "Dataset Shape: (400, 5)\n",[m
+[32m +      "\n",[m
+[32m +      "Pass/Fail Counts:\n",[m
+[32m +      "passed\n",[m
+[32m +      "1    213\n",[m
+[32m +      "0    187\n",[m
+[32m +      "Name: count, dtype: int64\n",[m
+[32m +      "\n",[m
+[32m +      "Training Shape: (320, 4)\n",[m
+[32m +      "Testing Shape: (80, 4)\n",[m
+[32m +      "\n",[m
+[32m +      "Logistic Regression Accuracy: 0.775\n",[m
+[32m +      "Logistic Regression Recall for Failures: 0.7567567567567568\n",[m
+[32m +      "\n",[m
+[32m +      "Before Scaling:\n",[m
+[32m +      "     study_hours  attendance  phone_hours  past_mark\n",[m
+[32m +      "89           1.4          62          5.7         78\n",[m
+[32m +      "47           5.8          68          4.1         73\n",[m
+[32m +      "148          2.4          93          4.0         62\n",[m
+[32m +      "204          5.5          77          0.7         82\n",[m
+[32m +      "199          4.0          91          1.0         73\n",[m
+[32m +      "\n",[m
+[32m +      "After Scaling:\n",[m
+[32m +      "     study_hours  attendance  phone_hours  past_mark\n",[m
+[32m +      "89     -1.083330   -0.885103     0.764906   0.762183\n",[m
+[32m +      "47      1.472516   -0.480388     0.073832   0.499983\n",[m
+[32m +      "148    -0.502456    1.205923     0.030639  -0.076857\n",[m
+[32m +      "204     1.298253    0.126684    -1.394702   0.971943\n",[m
+[32m +      "199     0.426942    1.071018    -1.265126   0.499983\n",[m
+[32m +      "\n",[m
+[32m +      "KNN Accuracy (Scaled): 0.7625\n",[m
+[32m +      "KNN Recall for Failures (Scaled): 0.7567567567567568\n",[m
+[32m +      "\n",[m
+[32m +      "KNN Accuracy (Without Scaling): 0.625\n",[m
+[32m +      "KNN Recall for Failures (Without Scaling): 0.5135135135135135\n",[m
+[32m +      "\n",[m
+[32m +      "New Student:\n",[m
+[32m +      "Chance of Passing: 0.9 %\n",[m
+[32m +      "Logistic Regression Prediction: 0\n",[m
+[32m +      "KNN Prediction (Scaled): 0\n",[m
+[32m +      "\n",[m
+[32m +      "Recommendation:\n",[m
+[32m +      "Both models have the same recall for failing students.\n",[m
+[32m +      "Compare failure recall and accuracy before choosing a model.\n"[m
+[32m++=======[m
+[32m+       "(400, 5)\n"[m
+[32m++>>>>>>> 17032f40c9d00530a9bf1e0c500f855157650e00[m
+       ][m
+      }[m
+     ],[m
+     "source": [[m
+[32m++<<<<<<< HEAD[m
+[32m +    "import pandas as pd\n",[m
+[32m +    "from sklearn.model_selection import train_test_split\n",[m
+[32m +    "from sklearn.linear_model import LogisticRegression\n",[m
+[32m +    "from sklearn.neighbors import KNeighborsClassifier\n",[m
+[32m +    "from sklearn.preprocessing import StandardScaler\n",[m
+[32m +    "from sklearn.metrics import accuracy_score, recall_score\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 1: Load the data\n",[m
+[32m +    "df = pd.read_csv(\"exam.csv\")\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"Dataset Shape:\", df.shape)\n",[m
+[32m +    "print(\"\\nPass/Fail Counts:\")\n",[m
+[32m +    "print(df[\"passed\"].value_counts())\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 2: Make X and y\n",[m
+[32m +    "features = [\"study_hours\", \"attendance\", \"phone_hours\", \"past_mark\"]\n",[m
+[32m +    "\n",[m
+[32m +    "X = df[features]\n",[m
+[32m +    "y = df[\"passed\"]\n",[m
+[32m +    "\n",[m
+[32m +    "# Split the data\n",[m
+[32m +    "X_train, X_test, y_train, y_test = train_test_split(\n",[m
+[32m +    "    X, y,\n",[m
+[32m +    "    test_size=0.2,\n",[m
+[32m +    "    random_state=42,\n",[m
+[32m +    "    stratify=y\n",[m
+[32m +    ")\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nTraining Shape:\", X_train.shape)\n",[m
+[32m +    "print(\"Testing Shape:\", X_test.shape)\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 3: Logistic Regression\n",[m
+[32m +    "lr = LogisticRegression(max_iter=1000)\n",[m
+[32m +    "lr.fit(X_train, y_train)\n",[m
+[32m +    "\n",[m
+[32m +    "lr_pred = lr.predict(X_test)\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nLogistic Regression Accuracy:\",\n",[m
+[32m +    "      accuracy_score(y_test, lr_pred))\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"Logistic Regression Recall for Failures:\",\n",[m
+[32m +    "      recall_score(y_test, lr_pred, pos_label=0))\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 4: Scale the data for KNN\n",[m
+[32m +    "scaler = StandardScaler()\n",[m
+[32m +    "\n",[m
+[32m +    "X_train_scaled = scaler.fit_transform(X_train)\n",[m
+[32m +    "X_test_scaled = scaler.transform(X_test)\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nBefore Scaling:\")\n",[m
+[32m +    "print(X_train.head())\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nAfter Scaling:\")\n",[m
+[32m +    "print(pd.DataFrame(\n",[m
+[32m +    "    X_train_scaled,\n",[m
+[32m +    "    columns=features,\n",[m
+[32m +    "    index=X_train.index\n",[m
+[32m +    ").head())\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 5A: KNN with scaling\n",[m
+[32m +    "knn_scaled = KNeighborsClassifier(n_neighbors=5)\n",[m
+[32m +    "knn_scaled.fit(X_train_scaled, y_train)\n",[m
+[32m +    "\n",[m
+[32m +    "knn_scaled_pred = knn_scaled.predict(X_test_scaled)\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nKNN Accuracy (Scaled):\",\n",[m
+[32m +    "      accuracy_score(y_test, knn_scaled_pred))\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"KNN Recall for Failures (Scaled):\",\n",[m
+[32m +    "      recall_score(y_test, knn_scaled_pred, pos_label=0))\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 5B: KNN without scaling\n",[m
+[32m +    "knn_unscaled = KNeighborsClassifier(n_neighbors=5)\n",[m
+[32m +    "knn_unscaled.fit(X_train, y_train)\n",[m
+[32m +    "\n",[m
+[32m +    "knn_unscaled_pred = knn_unscaled.predict(X_test)\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nKNN Accuracy (Without Scaling):\",\n",[m
+[32m +    "      accuracy_score(y_test, knn_unscaled_pred))\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"KNN Recall for Failures (Without Scaling):\",\n",[m
+[32m +    "      recall_score(y_test, knn_unscaled_pred, pos_label=0))\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 6: Predict for a new student\n",[m
+[32m +    "new_student = pd.DataFrame([{\n",[m
+[32m +    "    \"study_hours\": 1,\n",[m
+[32m +    "    \"attendance\": 60,\n",[m
+[32m +    "    \"phone_hours\": 6,\n",[m
+[32m +    "    \"past_mark\": 45\n",[m
+[32m +    "}])\n",[m
+[32m +    "\n",[m
+[32m +    "# Logistic Regression probability and prediction\n",[m
+[32m +    "pass_index = list(lr.classes_).index(1)\n",[m
+[32m +    "pass_probability = lr.predict_proba(new_student)[0][pass_index]\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"\\nNew Student:\")\n",[m
+[32m +    "print(\"Chance of Passing:\",\n",[m
+[32m +    "      round(pass_probability * 100, 2), \"%\")\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"Logistic Regression Prediction:\",\n",[m
+[32m +    "      lr.predict(new_student)[0])\n",[m
+[32m +    "\n",[m
+[32m +    "# KNN prediction using scaled features\n",[m
+[32m +    "new_student_scaled = scaler.transform(new_student)\n",[m
+[32m +    "\n",[m
+[32m +    "print(\"KNN Prediction (Scaled):\",\n",[m
+[32m +    "      knn_scaled.predict(new_student_scaled)[0])\n",[m
+[32m +    "\n",[m
+[32m +    "# Step 7: School recommendation\n",[m
+[32m +    "print(\"\\nRecommendation:\")\n",[m
+[32m +    "if recall
