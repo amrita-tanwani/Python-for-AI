@@ -7,6 +7,9 @@ requires-python = ">=3.11"
 dependencies = [
     "chromadb>=1.5.9",
     "fastapi[standard]>=0.162.3",
+    "langchain-core>=1.7.7",
+    "langchain-openai>=1.7.4",
     "langgraph>=1.2.20",
+    "langgraph-supervisor>=0.0.31",
     "pydantic",
 ]
